@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>val(), hide(), show() 에 대해 알아보자</title>
+<style type="text/css">
+
+</style>
+
+<script type="text/javascript" src="../../js/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		
+		$("button#btnOK").bind('click', function() {
+			const userAnswer = $("input#answer").val().trim();
+			
+			if(userAnswer == 17){
+				
+			}
+		});
+		
+		$("button#btbtnRestartnOK").bind('click', function() {
+			
+		});
+		
+		
+	});
+</script>
+</head>
+<body>
+
+	문제 : 2+5*3=<input type="text" id="answer" />
+	   <br><br>
+	    <button type="button" id="btnOK">정답확인</button>   
+	    <button type="button" id="btnRestart">다시시작</button>
+	
+	   <div class="answerCheck ok"></div>
+	   <div class="answerCheck no"></div>
+   
+</body>
+</html>
