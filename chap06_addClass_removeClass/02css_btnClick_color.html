@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	span#start {
+		font-size: 16pt;
+		color: white;
+		background-color: navy;
+		margin-right: 20px;
+		
+	}
+	
+	button {
+		width: 110px;
+		height: 50px;
+		margin: 20px 10px 0 0;
+		font-size: 16pt;
+	}
+	
+	div.answer {
+		display: inline-block;
+	}
+	
+	
+</style>
+
+<script type="text/javascript" src="../../js/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		
+	const arrBtn = [{color:"red", hangul:"빨강"}
+	                     ,{color:"orange", hangul:"주황"}
+	                     ,{color:"yellow", hangul:"노랑"}
+	                     ,{color:"green", hangul:"초록"}
+	                     ,{color:"blue", hangul:"파랑"}
+	                     ,{color:"navy", hangul:"남색"}
+	                     ,{color:"purple", hangul:"보라"}
+	                   ];
+	
+	let html = `<span id="start">버튼을 눌러보세요</span>`;
+	
+	arrBtn.forEach(function(item, i, array) {
+		html += `<button id=${item.hangul} >${item.color}</button>`
+	});
+	
+	$("div#btnsDiv").html(html);
+	
+	// 클릭시 이벤트
+	$("#btnsDiv > button").click( (event)=>{
+		
+		const $target = $(event.target);
+		
+		// console.log($(event.target).text()); // red
+		// console.log($(event.target).prop('id')); // 빨강 
+		// console.log($target.index()); // 1 부터 시작함
+		
+		$("div#colorDiv").css({'width':'100px', 'height':'100px', 'background-color': $target.text()});
+		
+		// 1. button 의 id 로 hangul 을 주고, .prop('id')로 id 값을 알아오는 방법
+		// $("div#hangulDiv").html($target.prop('id')).css({'color': $target.text()});
+		
+		// 2. $(event.target).index() 를 이용하는 방법
+		// $("div#hangulDiv").html(arrBtn[$target.index()-1].hangul).css({'color':$target.text(), 'font-size':'20pt'});
+		// 근데 index() 는 어떨때는 뜻대로 잘 안나올 때가 있다. 그래서 다음의 방식을 사용한다. 
+		
+		// !!!! 중요 !!!! 꼭 기억!! //
+		// === 7개 버튼 중에서 클릭한 버튼의 index 값을 알아오고자 한다. === //
+		// console.log($("#btnsDiv > button").index($target)); // 알아오고자 하는 태그를 포함한 배열형태의 태그중에서, () 안의 index 가 무엇인지 알아오는 것이다.
+		 $("div#hangulDiv").html(arrBtn[$("#btnsDiv > button").index($target)].hangul).css({'color':$target.text(), 'font-size':'20pt'});
+		
+		});// end of $("#btnsDiv > button").click( (event, i)=>{----
+			
+		$("#btnsDiv > button").eq(1).trigger('click'); // 자동적으로 클릭한다는 trigger 을 준다.
+	});
+	
+</script>
+                   
+</head>
+<body>
+<div id="container">
+      <div id="btnsDiv"></div>
+       <div id="colorDiv" class="answer"></div>
+       <div id="hangulDiv" class="answer"></div>
+   </div>
+</body>
+</html>
