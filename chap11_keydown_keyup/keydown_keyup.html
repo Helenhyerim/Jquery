@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>keydown, keyup 이벤트 알아보기</title>
+<style type="text/css">
+	body{
+		margin: 0;
+		padding: 0;
+		font-family: Arial, "MS Trebuchet", sans-serif;
+		word-break: break-all; /*공백없이 영어로만 되어질 경우  해당 구역을 빠져나가는 것을 막기위해 사용한다*/
+	}
+	
+	div#container{
+		/* border: solid 1px gray; */
+		
+		margin: 0 auto;
+		padding: 2% 9% 0 10%;
+	}
+	
+	header#login{
+		/* border: solid 1px blue; */
+		width: 99%;
+		height: 120px;
+		background-color: #fff;
+	}
+
+	table#loginTbl {
+		/* border: solid 1px red; */
+		border-collapse: collapse;
+		/* width: 30%; */
+		
+	}
+	
+	table#loginTbl td{
+		/* border: solid 1px red; */
+		
+	}
+	
+	/* tbody 를 꼭 입력해줘야 적용된다 */
+	table#loginTbl > tbody > tr:last-child  >td{
+		text-align: center;
+		line-height: 40px;
+		
+	}
+	
+	input[type="submit"]{
+		margin-right: 15px;
+	}
+	
+	table#loginTbl > tbody tr{
+		line-height: 30px;
+	}
+	
+	input#userid , input#passwd {
+		line-height: 20px;
+	}
+	
+	/* 이 둘을 다 감싸는 header에 float 을 주면 안됨 */
+	header#login > form, div#logo{
+		float: left; 
+		width: 40%;
+	}
+	
+	div#logo{
+		/* border: solid 1px green; */
+		height: 110px;
+		
+		position: relative; /* 현재위치에서 옮겨준다  */
+		top: 18px; /* 양수이면 원래 위치에서 오른쪽 혹은 아래쪽으로 이동하고, 음수이면 원래 위치에서 왼쪽 혹은 위쪽으로 이동한다 */
+		left: -220px;
+	}
+	
+	div#logo > img {
+		width: 200px;
+	}
+	
+	div#contents{
+		/* border: solid 1px red; */
+		width: 99%;
+		float: left; /*  */
+	}
+	
+	div#contents > aside ,div#contents > section {
+		min-height: 500px;
+	}
+
+	div#contents > section > div#div_section {
+		max-height: 500px;
+		overflow: auto; /* max-height 쓸때는 꼭 overflow 를 적어준다 */
+	}
+	
+	div#contents > aside{
+		/* border: solid 1px blue; */
+		
+		float: left;
+		width: 20%;
+		background-color: #999;
+	}
+	
+	div#contents > aside > nav > ul{
+		margin: 0;
+		padding: 20px 0 0 40px;
+		list-style-type: none;/* 리스트 앞에 도형들을 없앰  */
+	}
+	
+	
+	div#contents > section {
+		/* border: solid 1px red; */
+		
+		float: right;
+		width: 74.5%;
+		background-color: #888;
+		color: #ffffe6;
+		
+	}
+	
+	div#contents > aside > nav > ul > li{
+		line-height: 50px;
+		font-size: 16pt;
+		font-weight: bold;
+	}
+	
+	
+	div#contents a {
+		text-decoration: none;
+		color: white;
+	}
+	
+	div#contents a:hover {
+		background-color: yellow;
+		color: red;
+	}
+	
+	div#contents >section > div#div_section> article {
+		padding: 20px 20px 0 20px;
+	}
+	
+	div#imsi {
+		clear: both;
+	}
+	footer{
+		/* border: solid 1px yellow; */
+		
+		width: 99%;
+		
+		clear: both; /*float 영향을 제거해 아래로 가게한다 */
+		background-color: #999;
+		text-align: center;
+		padding: 30px 0;
+		margin-top: 10px;  /* 그냥 했더니 본문 뒤에 가려진다 => div 생성해서 clear: both 한다  */ 
+		
+	}
+	
+</style>
+
+<script type="text/javascript" src="../../js/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	
+	
+	$(document).ready(function() {
+		
+		function func_login() {
+			const useridVal = $("input#userid").val().trim();
+			const passwdVal = $("input#passwd").val().trim();
+			
+			if(useridVal != "" && passwdVal != ""){
+				const frm = document.registerFrm; // 폼태그를 잡아서
+				frm.action = "register.do";
+				frm.method = "post";
+				frm.submit(); // submit 시킨다.
+			}
+			else{
+				alert("아이디와 비밀번호 모두 입력하세요!");
+			}
+		};
+		
+		$("input:button").click(() =>{
+			func_login();
+		});
+		
+		$("input:password[id='passwd']").bind("keyup", (event) =>{
+			if(event.keyCode == 13){ // 비밀번호란에서 엔터를 눌렀을 경우
+				func_login();
+			}
+		});
+	});
+</script>
+
+</head>
+<body>
+	<div id="container">
+		<header id="login">
+			<form name="registerFrm">
+				<table id="loginTbl">
+					<tr>
+						<td><label for="userid">아이디</label></td>
+						<td><input type="text" name="userid" id="userid" placeholder="아이디" autofocus autocomplete="off"></td>
+					</tr>
+					
+					<tr>
+						<td><label for="passwd">비밀번호</label></td>
+						<td><input type="password" name="passwd" id="passwd" placeholder="비밀번호"></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<input type="button" id="btnLogin" value="로그인"></input> <!-- submit 대신에 button 을 썼다  -->
+							<input type="reset" value="취소"></input>
+						</td>
+					</tr>
+					
+				</table>
+			</form>
+			
+			<div id="logo">
+				<img src="images/logo.png" />
+			</div>
+			
+		</header>
+		
+		<div id="contents">
+			<aside>
+				<nav>
+					<ul>
+						<li><a href="">카페</a></li>
+						<li><a href="">메일</a></li>
+						<li><a href="">뉴스</a></li>
+						<li><a href="">지도</a></li>
+						<li><a href="">증권</a></li>
+						<li><a href="">블로그</a></li>
+					</ul>
+				</nav>
+			</aside>
+			
+			<section>
+				<div id="div_section">
+					<article>
+						<header>기사1 제목입력</header>
+						<p>&quot;부동산 거래 동맥경화 우려..금리인하 검토시기 왔다&quot;</p>
+					</article>
+					
+					<article>
+						<header>기사2 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사3 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사4 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사5 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사6 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사7 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사8 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사9 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사10 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					<article>
+						<header>기사11 제목입력</header>
+						<p>&quot;예매창 지붕 뚫었다&quot;.. '어벤져스:엔드게임' 4DX, 예매 오픈 후 순삭 '매진'[공식입장]</p>
+					</article>
+					
+					
+				 </div>
+			</section>
+		</div>
+		
+		<div id="imsi"></div>
+		
+		<footer>
+			Copyright &copy; Kakao Corp. All rights reserved.
+		</footer>
+		
+	</div>
+
+
+</body>
+</html>
